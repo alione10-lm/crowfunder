@@ -4,7 +4,7 @@ import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 export const loginService = async (email, password) => {
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select("+password");
         if (!user) {
             throw new Error("Invalid credentials");
         }

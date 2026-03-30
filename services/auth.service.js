@@ -1,5 +1,6 @@
 import User from "../models/User.model.js";
 import { generateToken } from "../utils/generateToken.js";
+import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 export const loginService = async (email, password) => {
     try {
@@ -7,7 +8,7 @@ export const loginService = async (email, password) => {
         if (!user) {
             throw new Error("Invalid credentials");
         }
-        const isMatch = password === user.password;
+        const isMatch = await comparePassword(password, user.password);
         if (!isMatch) {
             throw new Error("Invalid credentials");
         }
@@ -27,7 +28,14 @@ export const registerService = async (name, email, password, role) => {
         if (!["owner", "investor"].includes(role)) {
             throw new Error("Role must be owner or investor");
         }
-        const user = await User.create({ name, email, password, role });
+
+        const hashedPassword = await hashPassword(password);
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role,
+        });
         const token = generateToken(user);
         return { token, user };
     } catch (error) {

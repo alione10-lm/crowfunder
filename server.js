@@ -7,10 +7,14 @@ import { authMiddleware } from "./middlewares/auth.middleware.js";
 
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import roleMiddleware from "./middlewares/role.middleware.js";
 
 dotenv.config();
 
 const app = express();
+
+import { swaggerSpec } from "./swagger.js";
+import swaggerUi from "swagger-ui-express";
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,10 +22,12 @@ app.use(cookieParser());
 connectDB();
 
 // for testing
-app.get("/", authMiddleware, (req, res) => {
+app.get("/", authMiddleware, roleMiddleware("admin"), (req, res) => {
     res.json({ message: "done", user: req.user });
 });
 
+// swagger documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // auth routes
 
 app.use("/api/auth", authRoutes);

@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./config/db.js";
 
 import authRoutes from "./rotues/auth.routes.js";
+import projectRoutes from "./rotues/project.routes.js";
 
 import { authMiddleware } from "./middlewares/auth.middleware.js";
 
@@ -30,7 +31,16 @@ app.get("/", authMiddleware, roleMiddleware("admin"), (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // auth routes
 
+//auth routes
 app.use("/api/auth", authRoutes);
+
+// project routes
+app.use(
+    "/api/projects",
+    authMiddleware,
+    roleMiddleware("owner"),
+    projectRoutes,
+);
 
 app.listen(process.env.PORT, () => {
     console.log("server runnig on ", process.env.PORT);

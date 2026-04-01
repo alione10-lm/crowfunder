@@ -30,7 +30,7 @@ const projectSchema = new mongoose.Schema(
         },
         maxInvestPercentage: {
             type: Number,
-            default: 100,
+            default: 50,
         },
     },
     { timestamps: true },

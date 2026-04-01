@@ -6,6 +6,7 @@ import {
     getProjectByIdService,
     updateProjectService,
     deleteProjectService,
+    closeProjectService,
 } from "../services/project.service.js";
 
 export const createProjectController = async (req, res) => {
@@ -28,10 +29,12 @@ export const createProjectController = async (req, res) => {
 
 export const getAllProjectsController = async (req, res) => {
     try {
-        const projects = await getAllProjectsService();
+        const { projects, investments } = await getAllProjectsService(
+            req.user._id,
+        );
         res.status(200).json({
             success: true,
-            data: projects,
+            data: { projects, investments },
         });
     } catch (error) {
         res.status(500).json({
@@ -83,6 +86,22 @@ export const deleteProjectController = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Project deleted successfully",
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+export const closeProjectController = async (req, res) => {
+    try {
+        const projectId = req.params.id;
+        const project = await closeProjectService(projectId);
+        res.status(200).json({
+            success: true,
+            data: project,
         });
     } catch (error) {
         res.status(500).json({

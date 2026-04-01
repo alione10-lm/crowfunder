@@ -1,5 +1,6 @@
 import Router from "express";
 import {
+    closeProjectController,
     createProjectController,
     deleteProjectController,
     getAllProjectsController,
@@ -18,5 +19,7 @@ router.get("/:id", getProjectByIdController);
 router.put("/:id", updateProjectController);
 
 router.delete("/:id", deleteProjectController);
+
+router.put("/:id/close", closeProjectController);
 
 export default router;

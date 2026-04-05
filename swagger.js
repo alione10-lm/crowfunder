@@ -4,10 +4,11 @@ const options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "CrowdFunding API",
+            title: "Mon API",
             version: "1.0.0",
-            description: "API de financement collaboratif",
+            description: "Documentation de mon backend Express",
         },
+        servers: [{ url: "http://localhost:5000/api" }],
         components: {
             securitySchemes: {
                 cookieAuth: {
@@ -18,7 +19,7 @@ const options = {
             },
         },
     },
-    apis: ["./routes/*.js"],
+    apis: ["./rotues/*.js", "./rotues/**/*.js"],
 };
 
-export const swaggerSpec = swaggerJsdoc(options);
+export default swaggerJsdoc(options);

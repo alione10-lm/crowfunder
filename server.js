@@ -14,7 +14,7 @@ dotenv.config();
 
 const app = express();
 
-import { swaggerSpec } from "./swagger.js";
+import swaggerSpec from "./swagger.js";
 import swaggerUi from "swagger-ui-express";
 
 app.use(express.json());
@@ -29,7 +29,6 @@ app.get("/", authMiddleware, roleMiddleware("admin"), (req, res) => {
 
 // swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// auth routes
 
 //auth routes
 app.use("/api/auth", authRoutes);
@@ -41,6 +40,8 @@ app.use(
     roleMiddleware("owner"),
     projectRoutes,
 );
+
+console.log(swaggerSpec.paths);
 
 app.listen(process.env.PORT, () => {
     console.log("server runnig on ", process.env.PORT);

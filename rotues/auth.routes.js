@@ -35,6 +35,39 @@ import {
  *         description: Invalid credentials
  */
 
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, password , name , role]
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 example: secret123
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               role:
+ *                 type: string
+ *                 example: investor
+ *     responses:
+ *       201:
+ *         description: Registration successful , usre created successfully
+ *       401:
+ *         description: Invalid credentials
+ */
+
 router.post("/login", validateLogin, handleValidation, login);
 router.post("/register", validateRegister, handleValidation, register);
 
